@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<resources>
+    <string name="app_name">Stepanabus</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title">Select Routes</string>
+    <string name="r1">10</string>
+    <string name="r2">10ա</string>
+    <string name="r3">12</string>
+    <string name="r4">13</string>
+    <string name="r5">14</string>
+    <string name="r6">15</string>
+    <string name="r7">16</string>
+    <string name="r8">17</string>
+    <string name="r9">18</string>
+    <string name="r10">21</string>
+    <string name="go">Go</string>
+    <string name="check1">Route 10 is checked</string>
+    <string name="check2">Route 10ա is checked</string>
+    <string name="check3">Route 12 is checked</string>
+    <string name="check4">Route 13 is checked</string>
+    <string name="check5">Route 14 is checked</string>
+    <string name="check6">Route 15 is checked</string>
+    <string name="check7">Route 16 is checked</string>
+    <string name="check8">Route 17 is checked</string>
+    <string name="check9">Route 18 is checked</string>
+    <string name="check10">Route 21 is checked</string>
+</resources>
