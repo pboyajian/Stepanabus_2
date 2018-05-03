@@ -28,6 +28,7 @@ import static android.view.View.VISIBLE;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -51,9 +52,10 @@ import java.util.Locale;
 
 import dat2017.stepanabus.R;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
+        ,GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener
+{
 
     private GoogleMap mMap;
 
@@ -69,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
+
     private Location mLastKnownLocation;
 
     // The entry point to Google Play services, used by the Places API and Fused Location Provider.
@@ -87,7 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             new Dot(), new Gap(20), new Dash(30), new Gap(20));
     List<PatternItem> dots = Arrays.<PatternItem>asList(
             new Dot(), new Gap(20));
-    List<PatternItem> dashes = Arrays.<PatternItem>asList(
+    List<PatternItem> dashes = Arrays.asList(
             new Dash(30), new Gap(20));
 
     //Route 10 below
@@ -247,26 +250,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             46.7552, 46.7637, 46.7654};
     Boolean route21=false;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //location permission stuff below
-        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-        boolean enabled = service
-                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+         if(checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+            LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+            boolean enabled = service
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if (!enabled) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+            // Retrieve location and camera position from saved instance state.
+            if (savedInstanceState != null) {
+                mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+                mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+            }
+        }else{
+            if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
+                Toast.makeText(this,
+                        "Permission required to display current location.",
+                        Toast.LENGTH_SHORT).show();
+            }
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+
 
 // check if enabled and if not send user to the GSP settings
 // Better solution would be to display a dialog and suggesting to
 // go to the settings
-        if (!enabled) {
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
-        }
-        // Retrieve location and camera position from saved instance state.
-        if (savedInstanceState != null) {
-            mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
-            mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
-        }
 
         // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_maps);
@@ -274,8 +289,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Build the Play services client for use by the Fused Location Provider and the Places API.
         // Use the addApi() method to request the Google Places API and the Fused Location Provider.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-            //    .enableAutoManage(this /* FragmentActivity */,
-            //            this /* OnConnectionFailedListener */)
+                .enableAutoManage(this /* FragmentActivity */,
+                        this /* OnConnectionFailedListener */)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -306,14 +321,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getBaseContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());*/
 
-       setContentView(R.layout.activity_maps);//Don't delete this line with the other code
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
         Intent intent = getIntent();
@@ -412,6 +425,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onPause() {
         super.onPause();
         if (mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, (LocationListener) this);
             mGoogleApiClient.disconnect();
         }
     }

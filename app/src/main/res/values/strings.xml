@@ -24,4 +24,5 @@
     <string name="check8">Route 17 is checked</string>
     <string name="check9">Route 18 is checked</string>
     <string name="check10">Route 21 is checked</string>
+    <string name="title_activity_maps2">Map</string>
 </resources>

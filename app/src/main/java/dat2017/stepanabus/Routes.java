@@ -26,12 +26,20 @@ public class Routes extends AppCompatActivity {
         addListenerOnCh10();
 
         addListenerOnButton();
+
+
+/*        final Button button = (Button) findViewById(R.id.button1);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+            }
+        });*/
     }
 
-    //public void sendMessage(View view){
-    //   Intent intent= new Intent(this, MapsActivity.class);
-    //  startActivity(intent);
-    //}
+    public void sendMessage(View view){
+       Intent intent= new Intent(this, MapsActivity.class);
+      startActivity(intent);
+    }
     public void addListenerOnCh1() {
         CheckBox ch1 = (CheckBox) findViewById(R.id.checkbox_1);
         ch1.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +126,12 @@ public class Routes extends AppCompatActivity {
         });
     }
 
-    public void addListenerOnButton() {
+    public void onCheckboxClicked(android.view.View view){
+
+    }
+
+
+    public void addListenerOnButton(){
         final CheckBox ch1 = (CheckBox) findViewById(R.id.checkbox_1);
         final CheckBox ch2 = (CheckBox) findViewById(R.id.checkbox_2);
         final CheckBox ch3 = (CheckBox) findViewById(R.id.checkbox_3);
@@ -130,13 +143,14 @@ public class Routes extends AppCompatActivity {
         final CheckBox ch9 = (CheckBox) findViewById(R.id.checkbox_9);
         final CheckBox ch10 = (CheckBox) findViewById(R.id.checkbox_10);
 
-
         Button btn = (Button) findViewById(R.id.button1);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Routes.this, MapsActivity.class);
+
+                Intent intent = new Intent(Routes.this, MapsActivity2.class);
+
                 intent.putExtra("ch1", ch1.isChecked());
                 intent.putExtra("ch2", ch2.isChecked());
                 intent.putExtra("ch3", ch3.isChecked());
@@ -148,7 +162,7 @@ public class Routes extends AppCompatActivity {
                 intent.putExtra("ch9", ch9.isChecked());
                 intent.putExtra("ch10", ch10.isChecked());
 
-                Routes.this.startActivity(intent);
+                startActivity(intent);
             }
         });
     }
