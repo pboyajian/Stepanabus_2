@@ -14,15 +14,15 @@
     <string name="r9">18</string>
     <string name="r10">21</string>
     <string name="go">Go</string>
-    <string name="check1">Route 10 is checked</string>
-    <string name="check2">Route 10ա is checked</string>
-    <string name="check3">Route 12 is checked</string>
-    <string name="check4">Route 13 is checked</string>
-    <string name="check5">Route 14 is checked</string>
-    <string name="check6">Route 15 is checked</string>
-    <string name="check7">Route 16 is checked</string>
-    <string name="check8">Route 17 is checked</string>
-    <string name="check9">Route 18 is checked</string>
-    <string name="check10">Route 21 is checked</string>
+    <string name="check1">Route 10</string>
+    <string name="check2">Route 10ա</string>
+    <string name="check3">Route 12</string>
+    <string name="check4">Route 13</string>
+    <string name="check5">Route 14</string>
+    <string name="check6">Route 15</string>
+    <string name="check7">Route 16</string>
+    <string name="check8">Route 17</string>
+    <string name="check9">Route 18</string>
+    <string name="check10">Route 21</string>
     <string name="title_activity_maps2">Map</string>
 </resources>
